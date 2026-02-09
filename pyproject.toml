@@ -1,0 +1,43 @@
+[project]
+name = "awesome-python-project"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+requires-python = ">=3.14.1"
+license = { file = "LICENSE" }
+dependencies = []
+
+[project.optional-dependencies]
+test = [
+    "covdefaults",
+    "pytest",
+    "pytest-cov",
+    "pytest-randomly",
+    "pytest-xdist",
+    "time-machine",
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages]
+find = {}
+
+[tool.autoflake]
+recursive = true
+
+[tool.mypy]
+files = "."
+ignore_missing_imports = true
+strict = true
+exclude = [
+    "tests/",
+]
+
+[tool.coverage.run]
+plugins = ["covdefaults"]
+omit = []
+
+[tool.coverage.html]
+directory = "artifacts/htmlcov/"
