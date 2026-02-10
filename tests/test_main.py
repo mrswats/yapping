@@ -6,14 +6,20 @@ from yapping.cli import main
 
 
 def test_main_add_command():
-    with patch("yapping.cli.add_dependency") as m_add_dep, patch("yapping.cli.compile_dependencies"):
+    with (
+        patch("yapping.cli.add_dependency") as m_add_dep,
+        patch("yapping.cli.compile_dependencies"),
+    ):
         main(["add", "foo"])
 
     m_add_dep.assert_called_with("pyproject.toml", "foo")
 
 
 def test_main_rm_command():
-    with patch("yapping.cli.remove_dependency") as m_rm_dep, patch("yapping.cli.compile_dependencies"):
+    with (
+        patch("yapping.cli.remove_dependency") as m_rm_dep,
+        patch("yapping.cli.compile_dependencies"),
+    ):
         main(["rm", "foo"])
 
     m_rm_dep.assert_called_with("pyproject.toml", "foo")
