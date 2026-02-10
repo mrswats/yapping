@@ -1,10 +1,12 @@
 [project]
-name = "yapping"
+name = "awesome-python-project"
 version = "0.1.0"
 description = ""
 readme = "README.md"
 requires-python = ">=3.14.1"
 dependencies = [
+    "foo",
+    "django",
     "pip-tools",
     "tomli-w",
 ]
@@ -22,9 +24,6 @@ test = [
     "time-machine",
 ]
 
-[project.entry-points]
-'ýapping' = {yap = "yap:main"}
-
 [build-system]
 requires = [
     "setuptools",
@@ -37,7 +36,7 @@ build-backend = "setuptools.build_meta"
 recursive = true
 
 [tool.mypy]
-files = "yap.py"
+files = "."
 ignore_missing_imports = true
 strict = true
 exclude = [
