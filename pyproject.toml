@@ -4,6 +4,9 @@ version = "0.1.0"
 description = ""
 readme = "README.md"
 requires-python = ">=3.14.1"
+authors = [
+    { name = "Ferran Jovell" },
+]
 dependencies = [
     "pip-tools",
     "tomli-w",
@@ -11,6 +14,9 @@ dependencies = [
 
 [project.license]
 file = "LICENSE"
+
+[project.urls]
+source = "https://github.com/mrswats/yapping/"
 
 [project.optional-dependencies]
 test = [
@@ -20,6 +26,10 @@ test = [
     "pytest-randomly",
     "pytest-xdist",
     "time-machine",
+]
+build = [
+    "build",
+    "twine",
 ]
 
 [project.scripts]

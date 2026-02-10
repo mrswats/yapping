@@ -4,24 +4,34 @@ Yet another python packaging manager.
 
 But it is basically a thin wrapper around
 [`pip-tools`](https://github.com/jazzband/pip-tools) which also adds and
-removes dependencies from pyproject's `dependency` list
-
-## Usage:
-
-```console
-yap add `foo`
-yap rm `foo`
-yap compile
-
-```
+removes dependencies from pyproject's `dependency` list.
 
 ## Installation:
 
 ```
-pip install pyp
+pip install yapping
 ```
 
-## Virtual Environment
+## Usage:
+
+Using `yap` is very easy:
+
+```console
+yap add '<foo>'
+yap rm '<foo>'
+yap compile
+
+```
+
+## Why you should use `yap`?
+
+You should not. This is my personal pet project.
+But, the good thing about it is that it does not lock you into it besides using
+`pip-tools` for compiling the dependencies.
+
+## Development
+
+### Virtual Environment
 
 Create a virtual Environment
 
@@ -30,7 +40,7 @@ virtualenv .venv -p pytthon 3.14
 source .venv/bin/activate
 ```
 
-## Tests
+### Tests
 
 Using pytest for Tests
 
@@ -38,7 +48,7 @@ Using pytest for Tests
 python -m pytest
 ```
 
-## Formatting and Linting
+### Formatting and Linting
 
 Using pre-commit for linting and formatting
 
