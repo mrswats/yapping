@@ -20,9 +20,9 @@ def test_main_rm_command():
 
 
 @pytest.mark.parametrize("command", ("add", "rm"))
-def test_main_commands_call_compile(command):
+def test_main_commands_call_compile(command, setup_file):
     with (
-        patch("yap.remove_dependency"),
+        patch("yap.add_dependency"),
         patch("yap.remove_dependency"),
         patch("yap.compile_dependencies") as m_pip_compile,
     ):
