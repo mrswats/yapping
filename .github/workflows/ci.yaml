@@ -26,7 +26,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r test-requirements.txt
+          pip install '.[test]'
           pip install setuptools
 
       - name: Run Tests
