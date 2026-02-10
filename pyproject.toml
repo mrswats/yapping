@@ -22,8 +22,8 @@ test = [
     "time-machine",
 ]
 
-[project.entry-points]
-'ýapping' = {yap = "yap:main"}
+[project.scripts]
+yap = "yapping.cli:main"
 
 [build-system]
 requires = [
@@ -32,12 +32,14 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
+include = [
+    "yapping",
+]
 
 [tool.autoflake]
 recursive = true
 in_place = true
-remove_all_unused_imports = true
-remove_duplicate_keys = true
+
 
 [tool.mypy]
 files = "."

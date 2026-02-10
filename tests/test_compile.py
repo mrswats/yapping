@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from yap import compile_dependencies
+from yapping.cli import compile_dependencies
 
 
 def test_compile_dependencies_calls_pip_compile():

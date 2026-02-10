@@ -2,18 +2,18 @@ from unittest.mock import patch
 
 import pytest
 
-from yap import main
+from yapping.cli import main
 
 
 def test_main_add_command():
-    with patch("yap.add_dependency") as m_add_dep, patch("yap.compile_dependencies"):
+    with patch("yapping.cli.add_dependency") as m_add_dep, patch("yapping.cli.compile_dependencies"):
         main(["add", "foo"])
 
     m_add_dep.assert_called_with("pyproject.toml", "foo")
 
 
 def test_main_rm_command():
-    with patch("yap.remove_dependency") as m_rm_dep, patch("yap.compile_dependencies"):
+    with patch("yapping.cli.remove_dependency") as m_rm_dep, patch("yapping.cli.compile_dependencies"):
         main(["rm", "foo"])
 
     m_rm_dep.assert_called_with("pyproject.toml", "foo")
@@ -22,9 +22,9 @@ def test_main_rm_command():
 @pytest.mark.parametrize("command", ("add", "rm"))
 def test_main_commands_call_compile(command, setup_file):
     with (
-        patch("yap.add_dependency"),
-        patch("yap.remove_dependency"),
-        patch("yap.compile_dependencies") as m_pip_compile,
+        patch("yapping.cli.add_dependency"),
+        patch("yapping.cli.remove_dependency"),
+        patch("yapping.cli.compile_dependencies") as m_pip_compile,
     ):
         main([command, "foo"])
 
@@ -32,7 +32,7 @@ def test_main_commands_call_compile(command, setup_file):
 
 
 def test_main_compile_calls_compile():
-    with patch("yap.compile_dependencies") as m_pip_compile:
+    with patch("yapping.cli.compile_dependencies") as m_pip_compile:
         main(["compile"])
 
     m_pip_compile.assert_called_once()
