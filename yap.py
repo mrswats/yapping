@@ -11,7 +11,6 @@ from typing import Sequence
 
 import tomli_w
 
-
 type PyprojectData = dict[str, Any]
 
 PYPROJECT_FILENAME = "pyproject.toml"

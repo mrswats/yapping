@@ -12,12 +12,10 @@ repos:
     rev: v2.3.1
     hooks:
       - id: autoflake
-        args: [-r, -i, --remove-all-unused-imports, --remove-duplicate-keys]
   - repo: https://github.com/psf/black
-    rev: 25.12.0
+    rev: 26.1.0
     hooks:
       - id: black
-        args: [-l, "99", -t, py314]
   - repo: https://github.com/asottile/reorder_python_imports
     rev: v3.16.0
     hooks:
@@ -26,6 +24,7 @@ repos:
     rev: v1.19.1
     hooks:
       - id: mypy
+        exclude: tests/
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.21.2
     hooks:

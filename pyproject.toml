@@ -35,14 +35,14 @@ build-backend = "setuptools.build_meta"
 
 [tool.autoflake]
 recursive = true
+in_place = true
+remove_all_unused_imports = true
+remove_duplicate_keys = true
 
 [tool.mypy]
-files = "yap.py"
+files = "."
 ignore_missing_imports = true
 strict = true
-exclude = [
-    "tests/",
-]
 
 [tool.coverage.run]
 plugins = [
