@@ -1,6 +1,6 @@
 import tomllib
 
-from yapping.cli import add_dependency
+from yapping.commands import add_dependency
 
 
 def test_add_dependency_adds_dependency(setup_file):

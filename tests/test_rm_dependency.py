@@ -1,6 +1,6 @@
 import tomllib
 
-from yapping.cli import remove_dependency
+from yapping.commands import remove_dependency
 
 
 def test_rm_dependency_removes_dependency(setup_file):
