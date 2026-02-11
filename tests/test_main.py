@@ -36,14 +36,14 @@ def test_main_commands_call_compile(command, setup_file):
     ):
         main([command, "foo"])
 
-    m_pip_compile.assert_called_once()
+    m_pip_compile.assert_called_once_with("pyproject.toml")
 
 
 def test_main_compile_calls_compile():
     with patch("yapping.cli.commands.compile_dependencies") as m_pip_compile:
         main(["compile"])
 
-    m_pip_compile.assert_called_once()
+    m_pip_compile.assert_called_once_with("pyproject.toml")
 
 
 def test_main_version(capsys):
