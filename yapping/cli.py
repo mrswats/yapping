@@ -5,6 +5,7 @@ import argparse
 import functools
 import subprocess
 import tomllib
+from importlib.metadata import version
 from typing import Any
 from typing import Callable
 from typing import Sequence
@@ -66,6 +67,14 @@ def add_dependency(pyproject_data: PyprojectData, package: str) -> PyprojectData
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version=f"v{version("yapping")}",
+        help="Print version of the tool.",
+    )
 
     subparser = parser.add_subparsers(title="command", dest="command")
 

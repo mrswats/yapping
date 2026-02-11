@@ -1,3 +1,5 @@
+import re
+from contextlib import suppress
 from unittest.mock import patch
 
 import pytest
@@ -42,6 +44,16 @@ def test_main_compile_calls_compile():
         main(["compile"])
 
     m_pip_compile.assert_called_once()
+
+
+def test_main_version(capsys):
+    with suppress(SystemExit):
+        main(["--version"])
+
+    out, err = capsys.readouterr()
+
+    assert re.match(r"v\d\.\d\.\d", out) is not None
+    assert err == ""
 
 
 def test_main_no_args_prints_help(capsys):
