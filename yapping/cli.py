@@ -49,6 +49,17 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="compile dependencies with pip-tools' `pip-compile`",
     )
 
+    version_parser = subparser.add_parser(
+        "version",
+        help="Updatea project version in pyproject.toml",
+    )
+    version_parser.add_argument(
+        "version_type",
+        help="What kind of version update to do.",
+        choices=["patch", "minor", "major"],
+        default="minor",
+    )
+
     parsed_args = parser.parse_args(argv)
 
     do_compile = False
@@ -59,6 +70,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     elif parsed_args.command == "rm":
         commands.remove_dependency(PYPROJECT_FILENAME, parsed_args.package)
         do_compile = True
+    elif parsed_args.command == "version":
+        commands.update_version(PYPROJECT_FILENAME, parsed_args.version_type)
     elif parsed_args.command == "compile":
         do_compile = True
     else:

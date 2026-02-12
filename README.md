@@ -20,7 +20,7 @@ Using `yap` is very easy:
 yap add '<foo>'
 yap rm '<foo>'
 yap compile
-
+yap version <version_upgrade_type>
 ```
 
 You can also call the module directly, like:

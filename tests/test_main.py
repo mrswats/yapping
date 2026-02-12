@@ -46,6 +46,21 @@ def test_main_compile_calls_compile():
     m_pip_compile.assert_called_once_with("pyproject.toml")
 
 
+@pytest.mark.parametrize("update_type", ("patch", "minor", "major"))
+def test_main_version_command(update_type):
+    with patch("yapping.cli.commands.update_version") as m_cversion:
+        main(["version", update_type])
+
+    m_cversion.assert_called_once_with("pyproject.toml", update_type)
+
+
+def test_main_version_command_wrong_choice():
+    with pytest.raises(SystemExit) as exc, patch("yapping.cli.commands.update_version"):
+        main(["version", "foo"])
+
+    assert exc.value.code == 2
+
+
 def test_main_version(capsys):
     with suppress(SystemExit):
         main(["--version"])
