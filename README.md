@@ -23,6 +23,12 @@ yap compile
 
 ```
 
+You can also call the module directly, like:
+
+```console
+python -m yapping <...>
+```
+
 ## Why you should use `yap`?
 
 You should not. This is my personal pet project.

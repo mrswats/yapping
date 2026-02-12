@@ -21,7 +21,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="Print version of the tool.",
     )
 
-    subparser = parser.add_subparsers(title="command", dest="command")
+    subparser = parser.add_subparsers(
+        title="command",
+        dest="command",
+    )
 
     add_dependency_parser = subparser.add_parser(
         "add",
@@ -65,7 +68,3 @@ def main(argv: Sequence[str] | None = None) -> int:
         commands.compile_dependencies(PYPROJECT_FILENAME)
 
     return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
