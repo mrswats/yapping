@@ -34,6 +34,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         "package",
         help="Name of the package to add.",
     )
+    add_dependency_parser.add_argument(
+        "--optional-dependencies",
+        help="TODO",
+    )
 
     rm_parser = subparser.add_parser(
         "rm",
@@ -42,6 +46,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     rm_parser.add_argument(
         "package",
         help="Name of the package to add.",
+    )
+    rm_parser.add_argument(
+        "--optional-dependencies",
+        help="TODO",
     )
 
     subparser.add_parser(
