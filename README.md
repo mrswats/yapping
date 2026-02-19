@@ -62,3 +62,21 @@ Using pre-commit for linting and formatting
 pre-commit install
 pre-commit run --all-files
 ```
+
+## Changelog
+
+## v0.4.0
+
+Fixed an issue when running `yap` through `pipx` in which the `pip-compile` binary was not found.
+
+## v0.3.0
+
+Add the new `version` command to manage versions in `pyproject.toml`.
+
+## v0.2.0
+
+Add `--version` flag to check the version of the tool.
+
+## v0.1.0
+
+First release of the project. `add`, `rm`, `compile` commands.
