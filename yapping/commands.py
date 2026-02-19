@@ -1,4 +1,7 @@
+import functools
+import os
 import re
+import site
 import subprocess
 import tomllib
 from typing import Any
@@ -33,9 +36,35 @@ def _read_write_toml_file(
         tomli_w.dump(new_data, f)
 
 
+@functools.cache
+def find_pip_compile_bin() -> str:
+    yap_site = os.path.join("/", *site.getsitepackages()[0].split("/")[:-3])
+    return os.path.join(yap_site, "bin", "pip-compile")
+
+
 def compile_dependencies(pyproject_filename: str) -> None:
-    cmd = ("pip-compile", "--generate-hashes", pyproject_filename)
-    subprocess.run(cmd, check=True)
+    cmd = (
+        find_pip_compile_bin(),
+        "--quiet",
+        "--generate-hashes",
+        pyproject_filename,
+    )
+    subprocess.run(cmd, check=True, capture_output=True)
+
+
+def compile_test_dependencies(
+    pyproject_filename: str, test_extra: str, test_requirements_output_file: str
+) -> None:
+    cmd = (
+        find_pip_compile_bin(),
+        "--quiet",
+        "--generate-hashes",
+        f"--extra={test_extra}",
+        "-o",
+        test_requirements_output_file,
+        pyproject_filename,
+    )
+    subprocess.run(cmd, check=True, capture_output=True)
 
 
 def remove_dependency(pyproject_filename: str, package: str) -> None:
