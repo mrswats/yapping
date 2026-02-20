@@ -65,6 +65,10 @@ pre-commit run --all-files
 
 ## Changelog
 
+## v0.5.0
+
+Add support for `optional-dependencies`.
+
 ## v0.4.0
 
 Fixed an issue when running `yap` through `pipx` in which the `pip-compile` binary was not found.
