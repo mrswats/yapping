@@ -82,6 +82,23 @@ def remove_dependency(pyproject_filename: str, package: str) -> None:
     _read_write_toml_file(_, pyproject_filename, package)
 
 
+def remove_optional_dependency(
+    pyproject_filename: str, extra: str, package: str
+) -> None:
+    def _(pyproject_data: PyprojectData, package: str) -> PyprojectData:
+        dependencies = list(pyproject_data["project"]["optional-dependencies"][extra])
+
+        if package in dependencies:
+            dependencies.remove(package)
+            dependencies.sort()
+
+        pyproject_data["project"]["optional-dependencies"][extra] = dependencies
+
+        return pyproject_data
+
+    _read_write_toml_file(_, pyproject_filename, package)
+
+
 def add_dependency(pyproject_filename: str, package: str) -> None:
     def _(pyproject_data: PyprojectData, package: str) -> PyprojectData:
         dependencies = list(pyproject_data["project"]["dependencies"])
@@ -91,6 +108,21 @@ def add_dependency(pyproject_filename: str, package: str) -> None:
             dependencies.sort()
 
         pyproject_data["project"]["dependencies"] = dependencies
+
+        return pyproject_data
+
+    _read_write_toml_file(_, pyproject_filename, package)
+
+
+def add_optional_dependency(pyproject_filename: str, extra: str, package: str) -> None:
+    def _(pyproject_data: PyprojectData, package: str) -> PyprojectData:
+        dependencies = list(pyproject_data["project"]["optional-dependencies"][extra])
+
+        if package not in dependencies:
+            dependencies.append(package)
+            dependencies.sort()
+
+        pyproject_data["project"]["optional-dependencies"][extra] = dependencies
 
         return pyproject_data
 

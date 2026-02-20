@@ -18,7 +18,9 @@ class Commands:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
 
     parser.add_argument(
         "-v",
@@ -33,20 +35,26 @@ def main(argv: Sequence[str] | None = None) -> int:
         dest="command",
     )
 
-    add_dependency_parser = subparser.add_parser(
+    add_parser = subparser.add_parser(
         Commands.ADD,
         help="Add a new dependency",
     )
-    add_dependency_parser.add_argument(
+    add_parser.add_argument(
         "package",
         help="Name of the package to add.",
     )
-    add_dependency_parser.add_argument(
+    add_parser.add_argument(
+        "--extra",
+        help="Add package to the optional dependencies list.",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+    )
+    add_parser.add_argument(
         "--optional-dependencies",
         help="Name of the optional dependencies list",
         default="test",
     )
-    add_dependency_parser.add_argument(
+    add_parser.add_argument(
         "--test-requirements",
         help="Name of the test requirements file.",
         default="test-requirements.txt",
@@ -59,6 +67,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     rm_parser.add_argument(
         "package",
         help="Name of the package to add.",
+    )
+    rm_parser.add_argument(
+        "--extra",
+        help="Add package to the optional dependencies list.",
+        action=argparse.BooleanOptionalAction,
+        default=False,
     )
     rm_parser.add_argument(
         "--optional-dependencies",
@@ -85,6 +99,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="Name of the test requirements file.",
         default="test-requirements.txt",
     )
+    compile_parser.add_argument(
+        "--extra",
+        help="Add package to the optional dependencies list.",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+    )
 
     version_parser = subparser.add_parser(
         Commands.VERSION,
@@ -100,15 +120,37 @@ def main(argv: Sequence[str] | None = None) -> int:
     parsed_args = parser.parse_args(argv)
 
     do_compile = False
+    do_compile_test = False
 
     if parsed_args.command == Commands.ADD:
-        commands.add_dependency(PYPROJECT_FILENAME, parsed_args.package)
-        do_compile = True
+        do_compile_test = True
+
+        if parsed_args.extra is True:
+            commands.add_optional_dependency(
+                PYPROJECT_FILENAME,
+                parsed_args.optional_dependencies,
+                parsed_args.package,
+            )
+        else:
+            do_compile = True
+            commands.add_dependency(PYPROJECT_FILENAME, parsed_args.package)
     elif parsed_args.command == Commands.REMOVE:
-        commands.remove_dependency(PYPROJECT_FILENAME, parsed_args.package)
-        do_compile = True
+        do_compile_test = True
+
+        if parsed_args.extra is True:
+            commands.remove_optional_dependency(
+                PYPROJECT_FILENAME,
+                parsed_args.optional_dependencies,
+                parsed_args.package,
+            )
+        else:
+            do_compile = True
+            commands.remove_dependency(PYPROJECT_FILENAME, parsed_args.package)
     elif parsed_args.command == Commands.COMPILE:
-        do_compile = True
+        do_compile_test = True
+
+        if not parsed_args.extra:
+            do_compile = True
     elif parsed_args.command == Commands.VERSION:
         commands.update_version(PYPROJECT_FILENAME, parsed_args.version_type)
     else:
@@ -116,6 +158,8 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if do_compile:
         commands.compile_dependencies(PYPROJECT_FILENAME)
+
+    if do_compile_test:
         commands.compile_test_dependencies(
             PYPROJECT_FILENAME,
             parsed_args.optional_dependencies,
