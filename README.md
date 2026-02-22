@@ -65,6 +65,10 @@ pre-commit run --all-files
 
 ## Changelog
 
+## v0.6.0
+
+Add `init` command to create scaffolding `pyproject.toml` file.
+
 ## v0.5.0
 
 Add support for `optional-dependencies`.
