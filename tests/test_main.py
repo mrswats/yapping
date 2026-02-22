@@ -95,15 +95,41 @@ def test_main_compile_only_extra_calls_compile():
 
 @pytest.mark.parametrize("update_type", ("patch", "minor", "major"))
 def test_main_version_command(update_type):
-    with patch("yapping.cli.commands.update_version") as m_cversion:
+    with patch("yapping.cli.commands.update_version") as m_version:
         main(["version", update_type])
 
-    m_cversion.assert_called_once_with("pyproject.toml", update_type)
+    m_version.assert_called_once_with("pyproject.toml", update_type)
+
+
+def test_main_init():
+    with patch("yapping.cli.commands.init") as m_init:
+        main(["init", "foo-project"])
+
+    m_init.assert_called_once_with("foo-project", ".")
+
+
+def test_main_init_compile():
+    with (
+        patch("yapping.cli.commands.init"),
+        patch("yapping.cli.commands.compile_dependencies") as m_pip_compile,
+        patch("yapping.cli.commands.compile_test_dependencies") as m_pip_compile_test,
+    ):
+        main(["init", "foo-project", "--compile"])
+
+    m_pip_compile.assert_called_once()
+    m_pip_compile_test.assert_called_once()
 
 
 def test_main_version_command_wrong_choice():
     with pytest.raises(SystemExit) as exc, patch("yapping.cli.commands.update_version"):
         main(["version", "foo"])
+
+    assert exc.value.code == 2
+
+
+def test_main_unknown_command():
+    with pytest.raises(SystemExit) as exc:
+        main(["foo"])
 
     assert exc.value.code == 2
 

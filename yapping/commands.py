@@ -3,6 +3,7 @@ import os
 import re
 import site
 import subprocess
+import sys
 import tomllib
 from typing import Any
 from typing import Callable
@@ -20,6 +21,15 @@ class Version(NamedTuple):
     major: str
     minor: str
     patch: str
+
+
+TEMPLATE_DIR = os.path.abspath(
+    os.path.join(__file__, "../templates/pyproject.toml"),
+)
+
+PYTHON_VERSION = (
+    f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
+)
 
 
 def _read_write_toml_file(
@@ -163,3 +173,21 @@ def update_version(pyproject_filename: str, version_type: str) -> None:
         return pyproject_data
 
     _read_write_toml_file(_, pyproject_filename, version_type)
+
+
+def init(project_name: str, output_dir: str) -> None:
+    with open(TEMPLATE_DIR, "rb") as f:
+        template_data = tomllib.load(f)
+
+    template_data["project"]["name"] = project_name
+    template_data["project"]["requires-python"] = f">={PYTHON_VERSION}"
+
+    output_filename = os.path.join(output_dir, "pyproject.toml")
+
+    if os.path.exists(output_filename):
+        raise exceptions.YappingException(
+            "Will not overwrite existing `pyproject.toml` file."
+        )
+
+    with open(output_filename, "wb") as f:
+        tomli_w.dump(template_data, f)

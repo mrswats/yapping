@@ -15,6 +15,7 @@ class Commands:
     REMOVE = "rm"
     COMPILE = "compile"
     VERSION = "version"
+    INIT = "init"
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -117,6 +118,35 @@ def main(argv: Sequence[str] | None = None) -> int:
         default="minor",
     )
 
+    init_parser = subparser.add_parser(
+        Commands.INIT,
+        help="Create a pyproject.toml from a template.",
+    )
+    init_parser.add_argument(
+        "project_name",
+        help="Name of the project.",
+    )
+    init_parser.add_argument(
+        "--output-dir",
+        help="Output directory for the generated pyproject.toml file.",
+        default=".",
+    )
+    init_parser.add_argument(
+        "--optional-dependencies",
+        help="Name of the optional dependencies list",
+        default="test",
+    )
+    init_parser.add_argument(
+        "--test-requirements",
+        help="Name of the test requirements file.",
+        default="test-requirements.txt",
+    )
+    init_parser.add_argument(
+        "--compile",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+    )
+
     parsed_args = parser.parse_args(argv)
 
     do_compile = False
@@ -153,6 +183,12 @@ def main(argv: Sequence[str] | None = None) -> int:
             do_compile = True
     elif parsed_args.command == Commands.VERSION:
         commands.update_version(PYPROJECT_FILENAME, parsed_args.version_type)
+    elif parsed_args.command == Commands.INIT:
+        commands.init(parsed_args.project_name, parsed_args.output_dir)
+
+        if parsed_args.compile:
+            do_compile = True
+            do_compile_test = True
     else:
         parser.print_help()
 

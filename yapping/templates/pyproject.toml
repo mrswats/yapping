@@ -1,0 +1,20 @@
+[project]
+name = "{{ project_name }}"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+requires-python = ">={{ python_version }}"
+dependencies = []
+
+[project.license]
+file = "LICENSE"
+
+[project.optional-dependencies]
+
+[build-system]
+requires = [
+    "setuptools",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
