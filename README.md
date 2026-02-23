@@ -65,6 +65,14 @@ pre-commit run --all-files
 
 ## Changelog
 
+## v1.1.0
+
+Fix the CLI passing parameters to the commands.
+
+## v1.0.0
+
+Add support for adding or removing multiple packages at once.
+
 ## v0.6.0
 
 Add `init` command to create scaffolding `pyproject.toml` file.
