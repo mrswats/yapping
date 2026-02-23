@@ -5,7 +5,7 @@ from yapping.commands import add_optional_dependency
 
 
 def test_add_dependency_adds_dependency(setup_file):
-    add_dependency(setup_file, "foo")
+    add_dependency(setup_file, "foo", "bar")
 
     with open(setup_file, "rb") as fp:
         data = tomllib.load(fp)

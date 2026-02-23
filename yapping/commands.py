@@ -113,7 +113,8 @@ def add_dependency(pyproject_filename: str, *packages: str) -> None:
     def _(pyproject_data: PyprojectData, *packages: str) -> PyprojectData:
         dependencies = set(pyproject_data["project"]["dependencies"])
 
-        dependencies.add(*packages)
+        for pkg in packages:
+            dependencies.add(pkg)
 
         pyproject_data["project"]["dependencies"] = sorted(dependencies)
 
@@ -128,7 +129,8 @@ def add_optional_dependency(
     def _(pyproject_data: PyprojectData, *packages: str) -> PyprojectData:
         dependencies = set(pyproject_data["project"]["optional-dependencies"][extra])
 
-        dependencies.add(*packages)
+        for pkg in packages:
+            dependencies.add(pkg)
 
         pyproject_data["project"]["optional-dependencies"][extra] = sorted(dependencies)
 

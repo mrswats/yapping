@@ -41,7 +41,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="Add a new dependency",
     )
     add_parser.add_argument(
-        "package",
+        "packages",
         help="Name of the package to add.",
         nargs="*",
     )
@@ -67,7 +67,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="Remove an existing dependency",
     )
     rm_parser.add_argument(
-        "package",
+        "packages",
         help="Name of the package to add.",
         nargs="*",
     )
@@ -161,11 +161,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             commands.add_optional_dependency(
                 PYPROJECT_FILENAME,
                 parsed_args.optional_dependencies,
-                parsed_args.package,
+                *parsed_args.packages,
             )
         else:
             do_compile = True
-            commands.add_dependency(PYPROJECT_FILENAME, parsed_args.package)
+            commands.add_dependency(
+                PYPROJECT_FILENAME,
+                *parsed_args.packages,
+            )
     elif parsed_args.command == Commands.REMOVE:
         do_compile_test = True
 
@@ -173,11 +176,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             commands.remove_optional_dependency(
                 PYPROJECT_FILENAME,
                 parsed_args.optional_dependencies,
-                parsed_args.package,
+                *parsed_args.packages,
             )
         else:
             do_compile = True
-            commands.remove_dependency(PYPROJECT_FILENAME, parsed_args.package)
+            commands.remove_dependency(
+                PYPROJECT_FILENAME,
+                *parsed_args.packages,
+            )
     elif parsed_args.command == Commands.COMPILE:
         do_compile_test = True
 
