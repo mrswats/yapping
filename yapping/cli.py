@@ -43,6 +43,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     add_parser.add_argument(
         "package",
         help="Name of the package to add.",
+        nargs="*",
     )
     add_parser.add_argument(
         "--extra",
@@ -68,6 +69,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     rm_parser.add_argument(
         "package",
         help="Name of the package to add.",
+        nargs="*",
     )
     rm_parser.add_argument(
         "--extra",

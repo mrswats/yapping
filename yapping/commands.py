@@ -77,66 +77,64 @@ def compile_test_dependencies(
     subprocess.run(cmd, check=True, capture_output=True)
 
 
-def remove_dependency(pyproject_filename: str, package: str) -> None:
-    def _(pyproject_data: PyprojectData, package: str) -> PyprojectData:
-        dependencies = list(pyproject_data["project"]["dependencies"])
+def remove_dependency(pyproject_filename: str, *packages: str) -> None:
+    def _(pyproject_data: PyprojectData, *packages: str) -> PyprojectData:
+        dependencies = set(pyproject_data["project"]["dependencies"])
 
-        if package in dependencies:
-            dependencies.remove(package)
-            dependencies.sort()
+        for pkg in packages:
+            if pkg in dependencies:
+                dependencies.remove(pkg)
 
-        pyproject_data["project"]["dependencies"] = dependencies
+        pyproject_data["project"]["dependencies"] = sorted(dependencies)
 
         return pyproject_data
 
-    _read_write_toml_file(_, pyproject_filename, package)
+    _read_write_toml_file(_, pyproject_filename, *packages)
 
 
 def remove_optional_dependency(
-    pyproject_filename: str, extra: str, package: str
+    pyproject_filename: str, extra: str, *packages: str
 ) -> None:
-    def _(pyproject_data: PyprojectData, package: str) -> PyprojectData:
-        dependencies = list(pyproject_data["project"]["optional-dependencies"][extra])
+    def _(pyproject_data: PyprojectData, *packages: str) -> PyprojectData:
+        dependencies = set(pyproject_data["project"]["optional-dependencies"][extra])
 
-        if package in dependencies:
-            dependencies.remove(package)
-            dependencies.sort()
+        for pkg in packages:
+            if pkg in dependencies:
+                dependencies.remove(pkg)
 
-        pyproject_data["project"]["optional-dependencies"][extra] = dependencies
-
-        return pyproject_data
-
-    _read_write_toml_file(_, pyproject_filename, package)
-
-
-def add_dependency(pyproject_filename: str, package: str) -> None:
-    def _(pyproject_data: PyprojectData, package: str) -> PyprojectData:
-        dependencies = list(pyproject_data["project"]["dependencies"])
-
-        if package not in dependencies:
-            dependencies.append(package)
-            dependencies.sort()
-
-        pyproject_data["project"]["dependencies"] = dependencies
+        pyproject_data["project"]["optional-dependencies"][extra] = sorted(dependencies)
 
         return pyproject_data
 
-    _read_write_toml_file(_, pyproject_filename, package)
+    _read_write_toml_file(_, pyproject_filename, *packages)
 
 
-def add_optional_dependency(pyproject_filename: str, extra: str, package: str) -> None:
-    def _(pyproject_data: PyprojectData, package: str) -> PyprojectData:
-        dependencies = list(pyproject_data["project"]["optional-dependencies"][extra])
+def add_dependency(pyproject_filename: str, *packages: str) -> None:
+    def _(pyproject_data: PyprojectData, *packages: str) -> PyprojectData:
+        dependencies = set(pyproject_data["project"]["dependencies"])
 
-        if package not in dependencies:
-            dependencies.append(package)
-            dependencies.sort()
+        dependencies.add(*packages)
 
-        pyproject_data["project"]["optional-dependencies"][extra] = dependencies
+        pyproject_data["project"]["dependencies"] = sorted(dependencies)
 
         return pyproject_data
 
-    _read_write_toml_file(_, pyproject_filename, package)
+    _read_write_toml_file(_, pyproject_filename, *packages)
+
+
+def add_optional_dependency(
+    pyproject_filename: str, extra: str, *packages: str
+) -> None:
+    def _(pyproject_data: PyprojectData, *packages: str) -> PyprojectData:
+        dependencies = set(pyproject_data["project"]["optional-dependencies"][extra])
+
+        dependencies.add(*packages)
+
+        pyproject_data["project"]["optional-dependencies"][extra] = sorted(dependencies)
+
+        return pyproject_data
+
+    _read_write_toml_file(_, pyproject_filename, *packages)
 
 
 def update_version(pyproject_filename: str, version_type: str) -> None:

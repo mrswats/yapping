@@ -15,7 +15,18 @@ def test_main_add_command():
     ):
         main(["add", "foo"])
 
-    m_add_dep.assert_called_with("pyproject.toml", "foo")
+    m_add_dep.assert_called_with("pyproject.toml", ["foo"])
+
+
+def test_main_add_command_accepts_multiple_packages():
+    with (
+        patch("yapping.cli.commands.add_dependency") as m_add_dep,
+        patch("yapping.cli.commands.compile_dependencies"),
+        patch("yapping.cli.commands.compile_test_dependencies"),
+    ):
+        main(["add", "foo", "bar"])
+
+    m_add_dep.assert_called_with("pyproject.toml", ["foo", "bar"])
 
 
 def test_main_add_extra_command():
@@ -26,7 +37,18 @@ def test_main_add_extra_command():
     ):
         main(["add", "foo", "--extra"])
 
-    m_add_dep.assert_called_with("pyproject.toml", "test", "foo")
+    m_add_dep.assert_called_with("pyproject.toml", "test", ["foo"])
+
+
+def test_main_add_extra_command_accepts_multiple_packages():
+    with (
+        patch("yapping.cli.commands.add_optional_dependency") as m_add_dep,
+        patch("yapping.cli.commands.compile_dependencies"),
+        patch("yapping.cli.commands.compile_test_dependencies"),
+    ):
+        main(["add", "foo", "bar", "--extra"])
+
+    m_add_dep.assert_called_with("pyproject.toml", "test", ["foo", "bar"])
 
 
 def test_main_rm_command():
@@ -37,7 +59,18 @@ def test_main_rm_command():
     ):
         main(["rm", "foo"])
 
-    m_rm_dep.assert_called_with("pyproject.toml", "foo")
+    m_rm_dep.assert_called_with("pyproject.toml", ["foo"])
+
+
+def test_main_rm_command_accepts_multiple_packages():
+    with (
+        patch("yapping.cli.commands.remove_dependency") as m_rm_dep,
+        patch("yapping.cli.commands.compile_dependencies"),
+        patch("yapping.cli.commands.compile_test_dependencies"),
+    ):
+        main(["rm", "foo", "bar"])
+
+    m_rm_dep.assert_called_with("pyproject.toml", ["foo", "bar"])
 
 
 def test_main_rm_extra_command():
@@ -48,7 +81,18 @@ def test_main_rm_extra_command():
     ):
         main(["rm", "foo", "--extra"])
 
-    m_rm_dep.assert_called_with("pyproject.toml", "test", "foo")
+    m_rm_dep.assert_called_with("pyproject.toml", "test", ["foo"])
+
+
+def test_main_rm_extra_command_accepts_multiple_packages():
+    with (
+        patch("yapping.cli.commands.remove_optional_dependency") as m_rm_dep,
+        patch("yapping.cli.commands.compile_dependencies"),
+        patch("yapping.cli.commands.compile_test_dependencies"),
+    ):
+        main(["rm", "foo", "bar", "--extra"])
+
+    m_rm_dep.assert_called_with("pyproject.toml", "test", ["foo", "bar"])
 
 
 @pytest.mark.parametrize("command", ("add", "rm"))
