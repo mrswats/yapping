@@ -36,3 +36,6 @@ jobs:
 
       - name: Enfoce 100% Tests Coverage
         run: python -m coverage report --include 'tests/**' --fail-under 100
+
+      - name: Check the CLI scripts work
+        run: yap --version
