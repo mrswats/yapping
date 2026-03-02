@@ -65,6 +65,10 @@ pre-commit run --all-files
 
 ## Changelog
 
+## v1.2.0
+
+Add support for python 3.11, 3.12 and 3.13.
+
 ## v1.1.0
 
 Fix the CLI passing parameters to the commands.
