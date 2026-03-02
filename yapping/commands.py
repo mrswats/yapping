@@ -8,13 +8,14 @@ import tomllib
 from typing import Any
 from typing import Callable
 from typing import NamedTuple
+from typing import TypeAlias
 
 import tomli_w
 
 from yapping import exceptions
 
-type PyprojectData = dict[str, Any]
-type CommandCallable = Callable[[PyprojectData, *tuple[str]], PyprojectData]
+PyprojectData: TypeAlias = dict[str, Any]
+CommandCallable: TypeAlias = Callable[[PyprojectData, *tuple[str]], PyprojectData]
 
 
 class Version(NamedTuple):

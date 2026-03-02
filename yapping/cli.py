@@ -27,7 +27,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         "-v",
         "--version",
         action="version",
-        version=f"v{version("yapping")}",
+        version=f"v{version('yapping')}",
         help="Print version of the tool.",
     )
 

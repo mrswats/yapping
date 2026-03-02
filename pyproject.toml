@@ -3,7 +3,7 @@ name = "yapping"
 version = "1.1.0"
 description = ""
 readme = "README.md"
-requires-python = ">=3.14.1"
+requires-python = ">=3.11.14"
 authors = [
     { name = "Ferran Jovell" },
 ]

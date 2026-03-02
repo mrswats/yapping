@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
 
     steps:
       - uses: actions/checkout@v3
@@ -21,7 +23,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.14"
+          python-version: ${{ matrix.python-version }}
           cache: "pip"
 
       - name: Install dependencies
@@ -34,3 +36,6 @@ jobs:
 
       - name: Enfoce 100% Tests Coverage
         run: python -m coverage report --include 'tests/**' --fail-under 100
+
+      - name: Check the CLI scripts work
+        run: yap --version
