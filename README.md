@@ -65,6 +65,10 @@ pre-commit run --all-files
 
 ## Changelog
 
+## v1.3.0
+
+Add `upgrade` command to upgrade dependencies.
+
 ## v1.2.0
 
 Add support for python 3.11, 3.12 and 3.13.
