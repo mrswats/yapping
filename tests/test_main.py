@@ -124,6 +124,19 @@ def test_main_compile_calls_compile():
     )
 
 
+def test_main_upgrade_calls_compile_with_extra_args():
+    with (
+        patch("yapping.cli.commands.compile_dependencies") as m_pip_compile,
+        patch("yapping.cli.commands.compile_test_dependencies") as m_pip_compile_test,
+    ):
+        main(["upgrade"])
+
+    m_pip_compile.assert_called_once_with("pyproject.toml", "--upgrade")
+    m_pip_compile_test.assert_called_once_with(
+        "pyproject.toml", "test", "test-requirements.txt", "--upgrade"
+    )
+
+
 def test_main_compile_only_extra_calls_compile():
     with (
         patch("yapping.cli.commands.compile_dependencies") as m_pip_compile,

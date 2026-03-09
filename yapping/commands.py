@@ -53,23 +53,28 @@ def find_pip_compile_bin() -> str:
     return os.path.join(yap_site, "bin", "pip-compile")
 
 
-def compile_dependencies(pyproject_filename: str) -> None:
+def compile_dependencies(pyproject_filename: str, *extra_args: str) -> None:
     cmd = (
         find_pip_compile_bin(),
         "--quiet",
         "--generate-hashes",
+        *extra_args,
         pyproject_filename,
     )
     subprocess.run(cmd, check=True, capture_output=True)
 
 
 def compile_test_dependencies(
-    pyproject_filename: str, test_extra: str, test_requirements_output_file: str
+    pyproject_filename: str,
+    test_extra: str,
+    test_requirements_output_file: str,
+    *extra_args: str,
 ) -> None:
     cmd = (
         find_pip_compile_bin(),
         "--quiet",
         "--generate-hashes",
+        *extra_args,
         f"--extra={test_extra}",
         "-o",
         test_requirements_output_file,

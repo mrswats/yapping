@@ -14,6 +14,7 @@ class Commands:
     ADD = "add"
     REMOVE = "rm"
     COMPILE = "compile"
+    UPGRADE = "upgrade"
     VERSION = "version"
     INIT = "init"
 
@@ -109,6 +110,21 @@ def main(argv: Sequence[str] | None = None) -> int:
         default=False,
     )
 
+    upgrade_parser = subparser.add_parser(
+        Commands.UPGRADE,
+        help="compile dependencies with pip-tools' `pip-compile`",
+    )
+    upgrade_parser.add_argument(
+        "--optional-dependencies",
+        help="Name of the optional dependencies list",
+        default="test",
+    )
+    upgrade_parser.add_argument(
+        "--test-requirements",
+        help="Name of the test requirements file.",
+        default="test-requirements.txt",
+    )
+
     version_parser = subparser.add_parser(
         Commands.VERSION,
         help="Updatea project version in pyproject.toml",
@@ -189,6 +205,16 @@ def main(argv: Sequence[str] | None = None) -> int:
 
         if not parsed_args.extra:
             do_compile = True
+    elif parsed_args.command == Commands.UPGRADE:
+        commands.compile_dependencies(PYPROJECT_FILENAME, "--upgrade")
+
+        commands.compile_test_dependencies(
+            PYPROJECT_FILENAME,
+            parsed_args.optional_dependencies,
+            parsed_args.test_requirements,
+            "--upgrade",
+        )
+
     elif parsed_args.command == Commands.VERSION:
         commands.update_version(PYPROJECT_FILENAME, parsed_args.version_type)
     elif parsed_args.command == Commands.INIT:
