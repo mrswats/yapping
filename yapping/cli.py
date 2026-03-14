@@ -19,7 +19,40 @@ class Commands:
     INIT = "init"
 
 
-def main(argv: Sequence[str] | None = None) -> int:
+def _package_arg(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "packages",
+        help="Name of the package to add.",
+        nargs="*",
+    )
+
+
+def _extra_arg(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--extra",
+        help="Add package to the optional dependencies list.",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+    )
+
+
+def _optional_dependencies_arg(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--optional-dependencies",
+        help="Name of the optional dependencies list",
+        default="test",
+    )
+
+
+def _test_requirements_arg(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--test-requirements",
+        help="Name of the test requirements file.",
+        default="test-requirements.txt",
+    )
+
+
+def make_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
@@ -41,89 +74,34 @@ def main(argv: Sequence[str] | None = None) -> int:
         Commands.ADD,
         help="Add a new dependency",
     )
-    add_parser.add_argument(
-        "packages",
-        help="Name of the package to add.",
-        nargs="*",
-    )
-    add_parser.add_argument(
-        "--extra",
-        help="Add package to the optional dependencies list.",
-        action=argparse.BooleanOptionalAction,
-        default=False,
-    )
-    add_parser.add_argument(
-        "--optional-dependencies",
-        help="Name of the optional dependencies list",
-        default="test",
-    )
-    add_parser.add_argument(
-        "--test-requirements",
-        help="Name of the test requirements file.",
-        default="test-requirements.txt",
-    )
+    _package_arg(add_parser)
+    _extra_arg(add_parser)
+    _optional_dependencies_arg(add_parser)
+    _test_requirements_arg(add_parser)
 
     rm_parser = subparser.add_parser(
         Commands.REMOVE,
         help="Remove an existing dependency",
     )
-    rm_parser.add_argument(
-        "packages",
-        help="Name of the package to add.",
-        nargs="*",
-    )
-    rm_parser.add_argument(
-        "--extra",
-        help="Add package to the optional dependencies list.",
-        action=argparse.BooleanOptionalAction,
-        default=False,
-    )
-    rm_parser.add_argument(
-        "--optional-dependencies",
-        help="Name of the optional dependencies list",
-        default="test",
-    )
-    rm_parser.add_argument(
-        "--test-requirements",
-        help="Name of the test requirements file.",
-        default="test-requirements.txt",
-    )
+    _package_arg(rm_parser)
+    _extra_arg(rm_parser)
+    _optional_dependencies_arg(rm_parser)
+    _test_requirements_arg(rm_parser)
 
     compile_parser = subparser.add_parser(
         Commands.COMPILE,
         help="compile dependencies with pip-tools' `pip-compile`",
     )
-    compile_parser.add_argument(
-        "--optional-dependencies",
-        help="Name of the optional dependencies list",
-        default="test",
-    )
-    compile_parser.add_argument(
-        "--test-requirements",
-        help="Name of the test requirements file.",
-        default="test-requirements.txt",
-    )
-    compile_parser.add_argument(
-        "--extra",
-        help="Add package to the optional dependencies list.",
-        action=argparse.BooleanOptionalAction,
-        default=False,
-    )
+    _extra_arg(compile_parser)
+    _optional_dependencies_arg(compile_parser)
+    _test_requirements_arg(compile_parser)
 
     upgrade_parser = subparser.add_parser(
         Commands.UPGRADE,
         help="compile dependencies with pip-tools' `pip-compile`",
     )
-    upgrade_parser.add_argument(
-        "--optional-dependencies",
-        help="Name of the optional dependencies list",
-        default="test",
-    )
-    upgrade_parser.add_argument(
-        "--test-requirements",
-        help="Name of the test requirements file.",
-        default="test-requirements.txt",
-    )
+    _optional_dependencies_arg(upgrade_parser)
+    _test_requirements_arg(upgrade_parser)
 
     version_parser = subparser.add_parser(
         Commands.VERSION,
@@ -150,21 +128,18 @@ def main(argv: Sequence[str] | None = None) -> int:
         default=".",
     )
     init_parser.add_argument(
-        "--optional-dependencies",
-        help="Name of the optional dependencies list",
-        default="test",
-    )
-    init_parser.add_argument(
-        "--test-requirements",
-        help="Name of the test requirements file.",
-        default="test-requirements.txt",
-    )
-    init_parser.add_argument(
         "--compile",
         action=argparse.BooleanOptionalAction,
         default=False,
     )
+    _optional_dependencies_arg(init_parser)
+    _test_requirements_arg(init_parser)
 
+    return parser
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    parser = make_parser()
     parsed_args = parser.parse_args(argv)
 
     do_compile = False
