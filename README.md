@@ -65,6 +65,10 @@ pre-commit run --all-files
 
 ## Changelog
 
+## v1.4.0
+
+Add `--compile`, `--compile-test` flags to `add`, and `rm` commands.
+
 ## v1.3.0
 
 Add `upgrade` command to upgrade dependencies.
