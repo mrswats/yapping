@@ -52,6 +52,21 @@ def _test_requirements_arg(parser: argparse.ArgumentParser) -> None:
     )
 
 
+def _compile_arg(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--compile",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Whether to compile the dependencies after running the command.",
+    )
+    parser.add_argument(
+        "--compile-test",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Whether to compile the test dependencies after running the command.",
+    )
+
+
 def make_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -75,6 +90,7 @@ def make_parser() -> argparse.ArgumentParser:
         help="Add a new dependency",
     )
     _package_arg(add_parser)
+    _compile_arg(add_parser)
     _extra_arg(add_parser)
     _optional_dependencies_arg(add_parser)
     _test_requirements_arg(add_parser)
@@ -84,6 +100,7 @@ def make_parser() -> argparse.ArgumentParser:
         help="Remove an existing dependency",
     )
     _package_arg(rm_parser)
+    _compile_arg(rm_parser)
     _extra_arg(rm_parser)
     _optional_dependencies_arg(rm_parser)
     _test_requirements_arg(rm_parser)
@@ -127,11 +144,7 @@ def make_parser() -> argparse.ArgumentParser:
         help="Output directory for the generated pyproject.toml file.",
         default=".",
     )
-    init_parser.add_argument(
-        "--compile",
-        action=argparse.BooleanOptionalAction,
-        default=False,
-    )
+    _compile_arg(init_parser)
     _optional_dependencies_arg(init_parser)
     _test_requirements_arg(init_parser)
 
@@ -201,10 +214,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     else:
         parser.print_help()
 
-    if do_compile:
+    if getattr(parsed_args, "compile", True) and do_compile:
         commands.compile_dependencies(PYPROJECT_FILENAME)
 
-    if do_compile_test:
+    if getattr(parsed_args, "compile_test", True) and do_compile_test:
         commands.compile_test_dependencies(
             PYPROJECT_FILENAME,
             parsed_args.optional_dependencies,

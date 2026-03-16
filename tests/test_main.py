@@ -160,7 +160,7 @@ def test_main_version_command(update_type):
 
 def test_main_init():
     with patch("yapping.cli.commands.init") as m_init:
-        main(["init", "foo-project"])
+        main(["init", "foo-project", "--no-compile", "--no-compile-test"])
 
     m_init.assert_called_once_with("foo-project", ".")
 
