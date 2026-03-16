@@ -9,6 +9,11 @@ from yapping import commands
 
 PYPROJECT_FILENAME = "pyproject.toml"
 
+UPGRADE_ARG = "--upgrade"
+
+COMPILE_PARAM = "compile"
+COMPILE_TEST_PARAM = "compile_test"
+
 
 class Commands:
     ADD = "add"
@@ -194,13 +199,13 @@ def main(argv: Sequence[str] | None = None) -> int:
         if not parsed_args.extra:
             do_compile = True
     elif parsed_args.command == Commands.UPGRADE:
-        commands.compile_dependencies(PYPROJECT_FILENAME, "--upgrade")
+        commands.compile_dependencies(PYPROJECT_FILENAME, UPGRADE_ARG)
 
         commands.compile_test_dependencies(
             PYPROJECT_FILENAME,
             parsed_args.optional_dependencies,
             parsed_args.test_requirements,
-            "--upgrade",
+            UPGRADE_ARG,
         )
 
     elif parsed_args.command == Commands.VERSION:
@@ -214,10 +219,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     else:
         parser.print_help()
 
-    if getattr(parsed_args, "compile", True) and do_compile:
+    if getattr(parsed_args, COMPILE_PARAM, True) and do_compile:
         commands.compile_dependencies(PYPROJECT_FILENAME)
 
-    if getattr(parsed_args, "compile_test", True) and do_compile_test:
+    if getattr(parsed_args, COMPILE_TEST_PARAM, True) and do_compile_test:
         commands.compile_test_dependencies(
             PYPROJECT_FILENAME,
             parsed_args.optional_dependencies,
