@@ -3,6 +3,10 @@ version: 2
 updates:
   - package-ecosystem: "pip"
     directory: "/"
+    groups:
+      pip:
+        patterns:
+          - "*"
     schedule:
       interval: monthly
   - package-ecosystem: github-actions
