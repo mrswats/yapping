@@ -12,26 +12,27 @@ dependencies = [
     "pip<26",
     "tomli-w",
 ]
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Operating System :: OS Independent",
+    "Software Development :: Build Tools ",
+]
 
 [project.license]
 file = "LICENSE"
 
 [project.urls]
+Homepage = "https://github.com/mrswats/yapping/"
+"Release notes" = "https://github.com/mrswats/yapping/blob/main/README.md#changelog"
 source = "https://github.com/mrswats/yapping/"
-
-[project.optional-dependencies]
-test = [
-    "covdefaults",
-    "pytest",
-    "pytest-cov",
-    "pytest-randomly",
-    "pytest-xdist",
-    "time-machine",
-]
-build = [
-    "build",
-    "twine",
-]
 
 [project.scripts]
 yap = "yapping.cli:main"
