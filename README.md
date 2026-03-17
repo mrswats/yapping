@@ -17,10 +17,21 @@ pip install yapping
 Using `yap` is very easy:
 
 ```console
-yap add '<foo>'
-yap rm '<foo>'
-yap compile
-yap version <version_upgrade_type>
+$ yap --help
+usage: python -m yapping [-h] [-v] {add,rm,compile,upgrade,version,init} ...
+
+options:
+  -h, --help            show this help message and exit
+  -v, --version         Print version of the tool.
+
+command:
+  {add,rm,compile,upgrade,version,init}
+    add                 Add a new dependency
+    rm                  Remove an existing dependency
+    compile             compile dependencies with pip-tools' `pip-compile`
+    upgrade             compile dependencies with pip-tools' `pip-compile`
+    version             Updatea project version in pyproject.toml
+    init                Create a pyproject.toml from a template.
 ```
 
 You can also call the module directly, like:
@@ -44,6 +55,7 @@ Create a virtual Environment
 ```
 virtualenv .venv -p pytthon 3.14
 source .venv/bin/activate
+python -m pip install -r testing/requirements-test.txt
 ```
 
 ### Tests
