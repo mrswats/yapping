@@ -9,7 +9,7 @@ authors = [
 ]
 dependencies = [
     "pip-tools",
-    "pip<26",
+    "pip<27",
     "tomli-w",
 ]
 classifiers = [
