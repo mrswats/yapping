@@ -77,6 +77,10 @@ pre-commit run --all-files
 
 ## Changelog
 
+## v1.5.0
+
+Sort dependencies case-insensitively.
+
 ## v1.4.0
 
 Add `--compile`, `--compile-test` flags to `add`, and `rm` commands.
