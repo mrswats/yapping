@@ -13,6 +13,22 @@ def test_add_dependency_adds_dependency(setup_file):
     assert "foo" in data["project"]["dependencies"]
 
 
+def test_add_dependency_adds_dependency_are_sorted(setup_file):
+    add_dependency(setup_file, "foo", "bar")
+
+    with open(setup_file, "rb") as fp:
+        data = tomllib.load(fp)
+
+    assert data["project"]["dependencies"] == [
+        "bar",
+        "django",
+        "djangorestframework",
+        "foo",
+        "pip-tools",
+        "tomli-w",
+    ]
+
+
 def test_add_dependency_is_idempotent(setup_file):
     add_dependency(setup_file, "bar")
     add_dependency(setup_file, "bar")
@@ -30,6 +46,25 @@ def test_add_optional_dependency_adds_dependency_to_optional_dependencies(setup_
         data = tomllib.load(fp)
 
     assert "foo" in data["project"]["optional-dependencies"]["test"]
+
+
+def test_add_optional_dependency_adds_dependency_to_optional_dependencies_are_sorted(
+    setup_file,
+):
+    add_optional_dependency(setup_file, "test", "foo")
+
+    with open(setup_file, "rb") as fp:
+        data = tomllib.load(fp)
+
+    assert data["project"]["optional-dependencies"]["test"] == [
+        "covdefaults",
+        "foo",
+        "pytest",
+        "pytest-cov",
+        "pytest-randomly",
+        "pytest-xdist",
+        "time-machine",
+    ]
 
 
 def test_add_optional_dependency_is_idempotent(setup_file):

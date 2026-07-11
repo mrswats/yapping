@@ -91,7 +91,7 @@ def remove_dependency(pyproject_filename: str, *packages: str) -> None:
             if pkg in dependencies:
                 dependencies.remove(pkg)
 
-        pyproject_data["project"]["dependencies"] = sorted(dependencies)
+        pyproject_data["project"]["dependencies"] = sorted(dependencies, key=str.lower)
 
         return pyproject_data
 
@@ -108,7 +108,9 @@ def remove_optional_dependency(
             if pkg in dependencies:
                 dependencies.remove(pkg)
 
-        pyproject_data["project"]["optional-dependencies"][extra] = sorted(dependencies)
+        pyproject_data["project"]["optional-dependencies"][extra] = sorted(
+            dependencies, key=str.lower
+        )
 
         return pyproject_data
 
@@ -122,7 +124,7 @@ def add_dependency(pyproject_filename: str, *packages: str) -> None:
         for pkg in packages:
             dependencies.add(pkg)
 
-        pyproject_data["project"]["dependencies"] = sorted(dependencies)
+        pyproject_data["project"]["dependencies"] = sorted(dependencies, key=str.lower)
 
         return pyproject_data
 
@@ -138,7 +140,9 @@ def add_optional_dependency(
         for pkg in packages:
             dependencies.add(pkg)
 
-        pyproject_data["project"]["optional-dependencies"][extra] = sorted(dependencies)
+        pyproject_data["project"]["optional-dependencies"][extra] = sorted(
+            dependencies, key=str.lower
+        )
 
         return pyproject_data
 

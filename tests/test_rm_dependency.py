@@ -13,6 +13,19 @@ def test_rm_dependency_removes_dependency(setup_file):
     assert "django" not in data["project"]["dependencies"]
 
 
+def test_rm_dependency_removes_dependency_are_sorted(setup_file):
+    remove_dependency(setup_file, "django")
+
+    with open(setup_file, "rb") as fp:
+        data = tomllib.load(fp)
+
+    assert data["project"]["dependencies"] == [
+        "djangorestframework",
+        "pip-tools",
+        "tomli-w",
+    ]
+
+
 def test_rm_dependency_idempotency(setup_file):
     remove_dependency(setup_file, "django")
     remove_dependency(setup_file, "django")
@@ -32,6 +45,24 @@ def test_rm_optional_dependency_removes_dependency_from_optional_dependencies(
         data = tomllib.load(fp)
 
     assert "pytest-django" not in data["project"]["optional-dependencies"]["test"]
+
+
+def test_rm_optional_dependency_removes_dependency_from_optional_dependencies_are_sorted(
+    setup_file,
+):
+    remove_optional_dependency(setup_file, "test", "pytest-django")
+
+    with open(setup_file, "rb") as fp:
+        data = tomllib.load(fp)
+
+    assert data["project"]["optional-dependencies"]["test"] == [
+        "covdefaults",
+        "pytest",
+        "pytest-cov",
+        "pytest-randomly",
+        "pytest-xdist",
+        "time-machine",
+    ]
 
 
 def test_rm_optional_dependency_is_idempotent(setup_file):
